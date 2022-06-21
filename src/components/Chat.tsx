@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Message } from "../types";
 import ChatBubble from "./ChatBubble";
 import { ethers } from "ethers";
+import { useEffect } from 'react';
 
 interface Props {
   account?: string;
@@ -12,6 +13,61 @@ const Chat = ({ account, chatContract }: Props) => {
   const [textareaContent, setTextareaContent] = useState("");
   const [txnStatus, setTxnStatus] = useState<string | null>(null);
   const [messages, setMessages] = useState<Message[]>();
+
+  const getMessages = async () => {
+    if (!chatContract || account) return
+
+    const messages = await chatContract.getMessages()
+
+    setMessages(() => {
+      return messages.map((w: any) => ({
+        address: w.sender,
+        date: w.timestamp._hex,
+        content: w.content,
+      }))
+    })
+  }
+
+  const setupMessageListener = (): ethers.Contract | void => {
+    if (!chatContract) return
+     
+    // .on("EVENT_NAME", callback) to listen to an event
+    const msgListener = chatContract.on(
+      "NewMessage",
+      (address, timestamp, content, _style) => {
+        setMessages((prev) => {
+          const newMessage = {
+            address,
+            date: timestamp._hex,
+            content,
+          }
+          return prev ? [...prev, newMessage] : [newMessage];
+        })
+      }
+    )
+    return msgListener
+  }
+
+  const sendMessage = async () => {
+    if (!chatContract) return
+    try {
+      setTxnStatus("WAIT")
+      const messageTxn = await chatContract.sendMessage(textareaContent)
+      setTxnStatus("SENDING")
+      await messageTxn.wait()
+    } catch (err) {
+      console.warn("Transaction failed with error", err)
+    } finally {
+      setTextareaContent("")
+      setTxnStatus(null)
+    }
+  }
+
+  useEffect(() => {
+    if (!chatContract || messages) return
+    getMessages() 
+    setupMessageListener()
+  }, [chatContract])
 
   return (
     <div className="chat">
@@ -47,7 +103,7 @@ const Chat = ({ account, chatContract }: Props) => {
               setTextareaContent(e.target.value);
             }}
           ></textarea>
-          <button disabled={!!txnStatus || !account}>
+          <button onClick={sendMessage} disabled={!!txnStatus || !account}>
             {txnStatus || "send message"}
           </button>
         </div>

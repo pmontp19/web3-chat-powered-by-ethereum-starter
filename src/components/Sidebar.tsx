@@ -1,12 +1,23 @@
-import React from "react";
+import React from 'react'
+import useIsMetaMaskInstalled from '../useIsMetaMaskInstalled'
+import { ethers } from 'ethers'
 
 interface Props {
-  setAccount: React.Dispatch<React.SetStateAction<string | undefined>>;
-  account?: string;
+  setAccount: React.Dispatch<React.SetStateAction<string | undefined>>
+  account?: string
 }
 
 const Sidebar = ({ setAccount, account }: Props) => {
-  const isMetaMaskInstalled = false;
+  const isMetaMaskInstalled = useIsMetaMaskInstalled()
+
+  const handleOnConnect = () => {
+    window.ethereum
+      .request({ method: 'eth_requestAccounts' })
+      .then((accounts: string[]) => {
+        setAccount(ethers.utils.getAddress(accounts[0]))
+      })
+      .catch((err: any) => console.log(err))
+  }
 
   return (
     <div className="sidebar">
@@ -18,11 +29,13 @@ const Sidebar = ({ setAccount, account }: Props) => {
         </>
       )}
       {!account && (
-        <button disabled={!isMetaMaskInstalled}>Connect With MetaMask</button>
+        <button onClick={handleOnConnect} disabled={!isMetaMaskInstalled}>
+          Connect With MetaMask
+        </button>
       )}
       {!isMetaMaskInstalled && <p>Please install MetaMask</p>}
     </div>
-  );
-};
+  )
+}
 
-export default Sidebar;
+export default Sidebar
