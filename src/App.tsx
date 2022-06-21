@@ -6,7 +6,7 @@ import useChatContract from './useChatContract';
 import BlockchainArtifact from "./contract/BlockchainChat-artifact.json"
 
 function App() {
-  const contractAddress = "0x56cD072f27f06a58175aEe579be55601E82D8fcD";
+  const contractAddress = "0x46bf453ca932ac8964d859590e4e547c2068b11f";
   const [account, setAccount] = useState<string>();
 
   const chatContract = useChatContract(
