@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/web3-chat-powered-by-ethereum-starter/static/css/main.4a2b212f.css",
+    "main.js": "/web3-chat-powered-by-ethereum-starter/static/js/main.4d5f0f14.js",
+    "static/js/787.224a204d.chunk.js": "/web3-chat-powered-by-ethereum-starter/static/js/787.224a204d.chunk.js",
+    "index.html": "/web3-chat-powered-by-ethereum-starter/index.html",
+    "main.4a2b212f.css.map": "/web3-chat-powered-by-ethereum-starter/static/css/main.4a2b212f.css.map",
+    "main.4d5f0f14.js.map": "/web3-chat-powered-by-ethereum-starter/static/js/main.4d5f0f14.js.map",
+    "787.224a204d.chunk.js.map": "/web3-chat-powered-by-ethereum-starter/static/js/787.224a204d.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.4a2b212f.css",
+    "static/js/main.4d5f0f14.js"
+  ]
+}
