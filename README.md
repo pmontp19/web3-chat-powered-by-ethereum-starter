@@ -1,3 +1,5 @@
+Following Thomas Guibert tutorial on [betterprograming.pub](https://betterprogramming.pub/create-a-web3-chat-powered-by-ethereum-6886824fad7a))
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
